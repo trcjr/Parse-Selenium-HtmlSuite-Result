@@ -4,6 +4,7 @@ use Smart::Comments;
 use FindBin;
 use File::Find qw(find);
 use Try::Tiny;
+use Path::Class;
 
 sub startup : Tests(startup) {
     my $self = shift;
@@ -12,7 +13,7 @@ sub startup : Tests(startup) {
             my @sample_test_result_files;
             my $data_dir = "$FindBin::Bin/test_case_data";
             find sub {
-                push @sample_test_result_files, $File::Find::name
+                push @sample_test_result_files, Path::Class::File->new($File::Find::name)
                   if -f $File::Find::name;
             }, $data_dir;
             $self->{_sample_test_result_files} = \@sample_test_result_files;
